@@ -6,4 +6,12 @@ export interface Product {
     price: number;
     // Agrega más propiedades según sea necesario
 }
+
+export type ProducttoMap = {
+    cod:number;
+    name: string;
+    brand:string;
+    price: number;
+    // Agrega más propiedades según sea necesario
+}
   

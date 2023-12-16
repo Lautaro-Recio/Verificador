@@ -1,11 +1,12 @@
 import { useState, ChangeEvent } from 'react';
 import * as XLSX from 'xlsx';
-import { Product } from './Types';
+import { Product, ProducttoMap } from './Types';
 
 const ExcelToJsonConverter: React.FC = () => {
   const [excelFile, setExcelFile] = useState<File | null>(null);
   const [jsonFile, setJsonFile] = useState<Product[] | null>();
-  const [handleCode, setHandleCode] = useState<number>();
+  const [product, setProduct] = useState<string>("");
+  const [productMap, setProductMap] = useState<ProducttoMap>();
 
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -62,22 +63,26 @@ const ExcelToJsonConverter: React.FC = () => {
   
   console.log(jsonFile)
 
-  console.log(handleCode)
-
+  //SOLUCIONAR EL FIND
   
-  
+  const filterProduct = () => {
+    const CodNumber = JSON.parse(product)
+    const cod = jsonFile?.find((e) => e.cod == CodNumber )
+    console.log(cod)
 
+    setProductMap(cod)
+  }
+  
   return (
     <div>
       <input type="file" onChange={handleFileChange} />
       <button onClick={convertExcelToJson}>Convertir a JSON</button>
-      <input type="number" className='border-2' onChange={(e)=>{setHandleCode(e.target.value)}} />
-      {jsonFile?.map(item =>(
-        <div className='grid grid-cols-1 place-items-center uppercase' key={item.cod}>
-          <p>{item.name} {item.brand}</p>
-          <p>$ {item.price}</p>
+      <input type="number" className='border-2' onChange={(e)=>{setProduct(e.target.value),filterProduct}} />
+      
+        <div className='grid grid-cols-1 place-items-center uppercase' >
+          
         </div>
-      ))}
+     
     </div>
   );
 };
