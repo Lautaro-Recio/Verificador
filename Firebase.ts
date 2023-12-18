@@ -29,3 +29,7 @@ export const uploadData = async (data: Product[]) => {
 };
 
 
+
+// Llamas a la función para obtener la colección
+
+
