@@ -7,6 +7,8 @@ import { collection, getDocs } from 'firebase/firestore';
 const ExcelToJsonConverter: React.FC = () => {
   const [excelFile, setExcelFile] = useState<File | null>(null);
   const [jsonFile, setJsonFile] = useState<Product[] | null>();
+  const [cod, setCod] = useState<string>();
+
   const [productMap, setProductMap] = useState<ProducttoMap>();
   const myInput = useRef<HTMLInputElement>(null);
 
@@ -80,7 +82,6 @@ const ExcelToJsonConverter: React.FC = () => {
               })
               .filter((producto: Product | null): producto is Product => producto !== null)
             : [];
-          console.log(jsonFile)
           uploadData(productos);
         }
       };
@@ -92,10 +93,9 @@ const ExcelToJsonConverter: React.FC = () => {
   };
 
   const filtrarProducto = (num: string) => {
+    setCod(num)
     try {
       const prod = jsonFile?.find((e) => e.cod === num);
-      console.log(num)
-      console.log(prod);
       setProductMap(prod);
     } catch (error) {
       console.error('Error al analizar JSON:', error);
@@ -104,29 +104,39 @@ const ExcelToJsonConverter: React.FC = () => {
 
 
   return (
-    <div>
-      <div className='bg-white text-center text-3xl '>
+    <div className='bg-gray-100'>
+      <div className='border-b-2 text-center text-4xl font-bold uppercase '>
         <h1 className='p-2 text-orange-500'>La mediterranea</h1>
-      </div>  
-      <div className="h-screen grid grid-cols-6 bg-gray-500">
+      </div>
+      <div className="h-screen flex">
 
-        <div className='overflow-hidden'>
-
+        <div className={`overflow-hidden ${cod !== "10" ? "w-0" : "w-32 p-4"} transition-all border-r-2 h-full`}>
           <input type="file" onChange={handleFileChange} className='w-auto' />
           <button onClick={convertirExcelAJson}>Convertir a JSON</button>
+        </div>
+        <div className="col-span-5 place-items-center w-full text-5xl text-center  uppercase">
           <input
             type="number"
             ref={myInput}
-            className="border-2"
+            className="border-2 h-1 opacity-0"
             onChange={(e) => {
               filtrarProducto(e.target.value);
             }}
           />
-        </div>
-        <div className="grid col-span-5 grid-cols-1 place-items-center border-2 text-4xl text-white h-64 uppercase">
-          <p>{productMap?.name} {productMap?.presentation} {productMap?.brand}</p>
-          <p>$ {productMap?.price}</p>
-          <p>{productMap?.cod}</p>
+          {productMap ? (
+            <b>
+              <p className='p-4'>{productMap?.name} </p>
+              <p>{productMap?.presentation} {productMap?.brand}</p>
+              <p className='p-4'>${productMap?.price}</p>
+              <p className='p-4'>{productMap?.cod}</p>
+            </b>
+          ) : (
+            <>
+              <b> 
+                <h1 className='p-2 text-4xl uppercase '>Consulte su precio aqui</h1>
+              </b>
+            </>)
+          }
         </div>
       </div>
     </div>
