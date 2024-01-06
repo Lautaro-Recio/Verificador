@@ -12,6 +12,7 @@ interface CheckerProps {
     setProductMap: React.Dispatch<React.SetStateAction<ProducttoMap | undefined> | null>; // Ajuste aquí
     setNotFound: React.Dispatch<React.SetStateAction<boolean>>;
     jsonFile?: Product[] | null;
+    setNavBar: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const Checker: React.FC<CheckerProps> = ({
@@ -23,8 +24,11 @@ const Checker: React.FC<CheckerProps> = ({
     setCod,
     setNotFound,
     setProductMap,
+    setNavBar,
 }) => {
+
     const filtrarProducto = (num: string) => {
+        num == "10" && setNavBar(true)
         setCod(num);
         try {
             const prod = jsonFile?.find((e) => e.cod === num);

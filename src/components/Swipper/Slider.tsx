@@ -33,7 +33,7 @@ const Slider: React.FC = () => {
                 slidesPerView={2}
                 modules={[Autoplay]}
                 autoplay={{
-                  delay: 3000,
+                  delay: 5000,
                   disableOnInteraction: false,
                 }}
                 pagination={{ clickable: true }}

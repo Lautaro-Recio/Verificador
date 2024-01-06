@@ -14,7 +14,7 @@ const App: React.FC = () => {
   const [notFound, setNotFound] = useState<boolean>(false);
   const [productMap, setProductMap] = useState<ProducttoMap | undefined>(undefined);
   const [section, setSection] = useState<number>(0);
-
+  const [navBar, setNavBar] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const getData = async () => {
@@ -49,9 +49,11 @@ const App: React.FC = () => {
 
   return (
     <>
-      <div className='h-screen overflow-hidden'>
-        <span className='h-screen w-screen absolute z-30' onClick={inputFocus}></span>
-        <NavBar cod={cod} setSection={setSection} />
+      <div className='h-screen overflow-hidden sticky'>
+        {section === 0 && (<span className='h-screen w-screen absolute z-30' onClick={inputFocus}></span>)}
+
+
+        <NavBar setNavBar={setNavBar}  navBar={navBar} setSection={setSection} />
 
         <div className='border-b-2 text-center text-4xl font-bold uppercase'>
           <h1 className='p-2 text-orange-500'>La mediterranea</h1>
@@ -60,6 +62,7 @@ const App: React.FC = () => {
           {section === 0 ? (
             <>
               <Checker
+                setNavBar={setNavBar}
                 myInput={inputRef}
                 cod={cod}
                 productMap={productMap}
@@ -70,10 +73,10 @@ const App: React.FC = () => {
                 notFound={notFound}
               />
             </>
-          ) : section === 1 ?(
-            <Update cod={cod} handleFileChange={handleFileChange} excelFile={excelFile} />
+          ) : section === 1 ? (
+            <Update cod={cod} handleFileChange={handleFileChange} excelFile={excelFile} where='products' />
           ) : (
-            <h1>hola</h1>
+            <Update cod={cod} handleFileChange={handleFileChange} excelFile={excelFile} where='offers' />
           )
           }
         </div>

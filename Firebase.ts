@@ -17,8 +17,8 @@ export const storage = getStorage(app)
 
  
 
-export const uploadData = async (data: Product[]) => {
-  const collectionRef = doc(db, 'la mediterranea', "products");
+export const uploadData = async (data: Product[], where:string) => {
+  const collectionRef = doc(db, 'la mediterranea', where);
 
   try {
     await setDoc(collectionRef, {data});
