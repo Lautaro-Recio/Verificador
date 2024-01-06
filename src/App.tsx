@@ -24,6 +24,7 @@ const App: React.FC = () => {
         const productData = doc.data();
         setJsonFile(productData?.data ?? null);
       });
+      //falta diferenciar el archivo de productos y el archivo de ofertas
     } catch (error) {
       console.error('Error al obtener datos:', error);
     }

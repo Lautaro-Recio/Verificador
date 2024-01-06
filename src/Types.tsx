@@ -5,8 +5,18 @@ export interface Product {
     brand:string;
     price: number;
     presentation:string;
+    img:string;
+    validity:string;
     // Agrega más propiedades según sea necesario
 }
+
+export interface dateType {
+    year: number;
+    month: number;
+    day: number;
+   
+}
+  
 
 export type ProducttoMap = {
     cod:string;

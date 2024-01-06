@@ -28,21 +28,26 @@ const Update: React.FC<props> = ({ handleFileChange, cod, excelFile, where }) =>
 
                     const products: Product[] = Array.isArray(jsonData)
                         ? jsonData.map((item: unknown) => {
+
                             const safeItem = item as {
+                                img?:string;
                                 name?: string;
                                 brand?: string;
                                 cod?: string;
                                 price?: number;
-                                presentation?: string
+                                presentation?: string;
+                                validity?:string;
                             };
 
                             if (typeof safeItem === 'object' && safeItem !== null) {
                                 const producto: Product = {
+                                    img: safeItem.img || "",
                                     cod: safeItem.cod || "",
                                     name: safeItem.name || '',
                                     brand: safeItem.brand || '',
                                     presentation: safeItem.presentation || '',
                                     price: safeItem.price || 0,
+                                    validity: safeItem.validity || ""
                                 };
                                 return producto;
                             }
