@@ -7,8 +7,16 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        'productsPng': "url(./src/assets/fondo.png)",
-      }
+        'productsPng': "url(./src/assets/imgs/fondo.png)",
+      },
+      fontFamily: {
+        custom: ['Causten-BlackOblique', 'sans-serif'],
+      },
+      colors: {
+        orangeMedit: '#e75113', // Reemplaza esto con el código de color que desees
+        grayMedit: '#c8c8c880', // Reemplaza esto con el código de color que desees
+
+      },
     }
   },
   plugins: [],

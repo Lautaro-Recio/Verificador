@@ -11,7 +11,8 @@ interface CheckerProps {
     setCod: React.Dispatch<React.SetStateAction<string>>;
     setProductMap: React.Dispatch<React.SetStateAction<ProducttoMap | undefined> | null>; // Ajuste aquí
     setNotFound: React.Dispatch<React.SetStateAction<boolean>>;
-    jsonFile?: Product[] | null;
+    ProductsFile?: Product[] | null;
+    OffersFile?: Product[] | null;
     setNavBar: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -20,7 +21,8 @@ const Checker: React.FC<CheckerProps> = ({
     cod,
     productMap,
     notFound,
-    jsonFile,
+    ProductsFile,
+    OffersFile,
     setCod,
     setNotFound,
     setProductMap,
@@ -31,7 +33,7 @@ const Checker: React.FC<CheckerProps> = ({
         num == "10" && setNavBar(true)
         setCod(num);
         try {
-            const prod = jsonFile?.find((e) => e.cod === num);
+            const prod = ProductsFile?.find((e) => e.cod === num);
             prod ? setProductMap(prod) : setNotFound(true);
         } catch (error) {
             console.error('Error al analizar JSON:', error);
@@ -51,7 +53,7 @@ const Checker: React.FC<CheckerProps> = ({
                 <input
                     type="number"
                     ref={myInput}
-                    className="border-2 h-1 opacity-0"
+                    className="opacity-0"
                     value={cod}
                     onChange={(e) => {
                         filtrarProducto(e.target.value);
@@ -62,15 +64,15 @@ const Checker: React.FC<CheckerProps> = ({
                         <FindedProduct productMap={productMap} />
                     ) : (
                         <b>
-                            <h1 className="text-4xl uppercase bg-[#e1e1e1b0] mx-72 p-2 rounded-lg">
-                                Consulte su precio aquí
+                            <h1 className="text-3xl font-custom uppercase text-orangeMedit  bg-grayMedit mx-72 p-2 rounded-lg">
+                                Consulte su precio aqui
                             </h1>
                         </b>
                     )}
                     {notFound && <UnfindedProduct cod={cod} />}
                 </div>
             </div>
-            <Slider />
+            <Slider OffersFile={OffersFile}/>
         </div>
     );
 };

@@ -69,8 +69,8 @@ const Update: React.FC<props> = ({ handleFileChange, cod, excelFile, where }) =>
     return (
         <div className={`overflow-hidden ${cod !== "10" ? "w-0" : "w-32 p-4"} grid place-items-center  absolute z-50 w-screen h-screen  transition-all border-r-2`}>
             <div className="grid gap-6">
-                <input type="file" onChange={handleFileChange} className='w-64 file:border-solid file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-2 file:font-bold file:border-orange-500 file:text-sm  file:bg-white file:text-orange-500 hover:file:bg-orange-500 hover:file:text-white' />
-                <button className="border-2 p-2 rounded-lg text-orange-500 border-orange-500 text-xl bg-white font-bold hover:bg-orange-500 hover:text-white transition-all" onClick={convertirExcelAJson}>{where ==="products" ? "Actualizar precios" : "Suir Ofertas"}</button>
+                <input type="file" onChange={handleFileChange} className='w-64 file:border-solid file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-2 file:font-bold file:border-orangeMedit file:text-sm  file:bg-white file:text-orangeMedit hover:file:bg-orangeMedit hover:file:text-white' />
+                <button className="border-2 p-2 rounded-lg text-orangeMedit border-orangeMedit text-xl bg-white font-bold hover:bg-orangeMedit hover:text-white transition-all" onClick={convertirExcelAJson}>{where ==="products" ? "Actualizar precios" : "Subir Ofertas"}</button>
             </div>
         </div>
     );

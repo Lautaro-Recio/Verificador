@@ -1,15 +1,17 @@
 import { useState, ChangeEvent, useRef, useEffect, Dispatch, SetStateAction } from 'react';
 import { Product, ProducttoMap } from './Types';
 import { db } from '../Firebase';
-import { collection, getDocs } from 'firebase/firestore';
-
+import {  doc, getDoc } from 'firebase/firestore';
+import logo from "./assets/imgs/logo.png"
 import NavBar from './components/NavBar/NavBar';
 import Checker from './components/checker/Checker';
 import Update from './components/Update/Update';
 
 const App: React.FC = () => {
   const [excelFile, setExcelFile] = useState<File | null>(null);
-  const [jsonFile, setJsonFile] = useState<Product[] | null>(null);
+  const [ProductsFile, setProductsFile] = useState<Product[] | null>(null);
+  const [OffersFile, setOffersFile] = useState<Product[] | null>(null);
+
   const [cod, setCod] = useState<string>("");
   const [notFound, setNotFound] = useState<boolean>(false);
   const [productMap, setProductMap] = useState<ProducttoMap | undefined>(undefined);
@@ -19,17 +21,17 @@ const App: React.FC = () => {
 
   const getData = async () => {
     try {
-      const dbCollection = await getDocs(collection(db, 'la mediterranea'));
-      dbCollection.forEach((doc) => {
-        const productData = doc.data();
-        setJsonFile(productData?.data ?? null);
-      });
+      const dbProducts = (await getDoc(doc(db, 'la mediterranea','products'))).data();
+      const dbOffers = (await getDoc(doc(db, 'la mediterranea','offers'))).data();
+
+      setProductsFile(dbProducts?.data)
+      setOffersFile(dbOffers?.data)
       //falta diferenciar el archivo de productos y el archivo de ofertas
     } catch (error) {
       console.error('Error al obtener datos:', error);
     }
   };
-
+  
   useEffect(() => {
     const fetchData = async () => {
       await getData();
@@ -56,8 +58,8 @@ const App: React.FC = () => {
 
         <NavBar setNavBar={setNavBar}  navBar={navBar} setSection={setSection} />
 
-        <div className='border-b-2 text-center text-4xl font-bold uppercase'>
-          <h1 className='p-2 text-orange-500'>La mediterranea</h1>
+        <div className='border-b-2 grid  place-items-center text-4xl font-bold uppercase'>
+          <img className='w-auto h-14' src={logo} alt="La mediterranea" />
         </div>
         <div className="h-screen flex bg-productsPng sticky">
           {section === 0 ? (
@@ -68,7 +70,8 @@ const App: React.FC = () => {
                 cod={cod}
                 productMap={productMap}
                 setCod={setCod}
-                jsonFile={jsonFile}
+                ProductsFile={ProductsFile}
+                OffersFile={OffersFile}
                 setProductMap={setProductMap as Dispatch<SetStateAction<ProducttoMap | undefined> | null>}
                 setNotFound={setNotFound}
                 notFound={notFound}
