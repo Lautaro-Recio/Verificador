@@ -11,9 +11,20 @@ const FullscreenPage: React.FC = () => {
   };
 
   useEffect(() => {
+    const deshabilitarMouseDown = (event: MouseEvent) => {
+      event.preventDefault();
+    };
+
+    document.addEventListener('mousedown', deshabilitarMouseDown);
+
+    return () => {
+      document.removeEventListener('mousedown', deshabilitarMouseDown);
+    };
+
+    
     const handleClick = () => {
       handleFullscreen();
-    };
+    }
 
     document.addEventListener('click', handleClick);
 

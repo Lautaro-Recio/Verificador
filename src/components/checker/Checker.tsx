@@ -53,7 +53,7 @@ const Checker: React.FC<CheckerProps> = ({
                 <input
                     type="number"
                     ref={myInput}
-                    className="opacity-0"
+                    className="opacity-0 w-0 h-0 pointer-events-none"
                     value={cod}
                     onChange={(e) => {
                         filtrarProducto(e.target.value);
@@ -65,7 +65,7 @@ const Checker: React.FC<CheckerProps> = ({
                     ) : (
                         <b>
                             <h1 className="text-3xl font-custom uppercase text-orangeMedit  bg-grayMedit mx-72 p-2 rounded-lg">
-                                a su precio aqui
+                                Consulte su precio aqui
                             </h1>
                         </b>
                     )}
