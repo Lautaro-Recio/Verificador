@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        'productsPng': "url(./src/assets/imgs/fondo.png)",
+        'productsPng': "url(./assets/imgs/fondo.png)",
       },
       fontFamily: {
         custom: ['Causten-BlackOblique', 'sans-serif'],
