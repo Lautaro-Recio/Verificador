@@ -31,12 +31,23 @@ const App: React.FC = () => {
       console.error('Error al obtener datos:', error);
     }
   };
-  
+  const handleClick = () => {
+    if (clickHabilitado) {
+      // Lógica del clic cuando está habilitado
+      alert('¡Clic habilitado!');
+    }
+  };
   useEffect(() => {
     const fetchData = async () => {
       await getData();
       inputRef.current?.focus();
     };
+    const deshabilitarClick = () => {
+      setClickHabilitado(false);
+    };
+
+    // Simula la deshabilitación del clic cuando se monta el componente
+    deshabilitarClick();
 
     fetchData();
   }, []);
@@ -47,13 +58,22 @@ const App: React.FC = () => {
   };
 
   const inputFocus = () => {
+    handleClick()
     inputRef.current?.focus();
   };
+
+
+  const [clickHabilitado, setClickHabilitado] = useState(true);
+
+
+
+
 
   return (
     <>
       <div className='h-screen overflow-hidden sticky'>
-        {section === 0 && (<span className='h-screen w-screen absolute z-30' onClick={inputFocus}></span>)}
+        
+        {section === 0 && (<span className='h-screen  w-screen absolute z-30' onClick={inputFocus}></span>)}
 
 
         <NavBar setNavBar={setNavBar}  navBar={navBar} setSection={setSection} />

@@ -65,7 +65,7 @@ const Checker: React.FC<CheckerProps> = ({
                     ) : (
                         <b>
                             <h1 className="text-3xl font-custom uppercase text-orangeMedit  bg-grayMedit mx-72 p-2 rounded-lg">
-                                Consulte su precio aqui
+                                a su precio aqui
                             </h1>
                         </b>
                     )}
