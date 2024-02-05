@@ -1,13 +1,18 @@
 import { useState, ChangeEvent, useRef, useEffect, Dispatch, SetStateAction } from 'react';
 import { Product, ProducttoMap } from './Types';
 import { db } from '../Firebase';
-import {  doc, getDoc } from 'firebase/firestore';
+import {  doc, onSnapshot } from 'firebase/firestore';
 import logo from "./assets/imgs/logo.png"
 import NavBar from './components/NavBar/NavBar';
 import Checker from './components/checker/Checker';
 import Update from './components/Update/Update';
 
-const App: React.FC = () => {
+interface Props {
+  deshabilitarMouseDown: (event: MouseEvent) => void
+}
+
+
+const App: React.FC<Props> = ({deshabilitarMouseDown}) => {
   const [excelFile, setExcelFile] = useState<File | null>(null);
   const [ProductsFile, setProductsFile] = useState<Product[] | null>(null);
   const [OffersFile, setOffersFile] = useState<Product[] | null>(null);
@@ -19,34 +24,55 @@ const App: React.FC = () => {
   const [navBar, setNavBar] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const getData = async () => {
+  const listenToDataChanges = () => {
     try {
-      const dbProducts = (await getDoc(doc(db, 'la mediterranea','products'))).data();
-      const dbOffers = (await getDoc(doc(db, 'la mediterranea','offers'))).data();
-
-      setProductsFile(dbProducts?.data)
-      setOffersFile(dbOffers?.data)
-      //falta diferenciar el archivo de productos y el archivo de ofertas
+      const productsRef = doc(db, 'la mediterranea', 'products');
+      const offersRef = doc(db, 'la mediterranea', 'offers');
+  
+      // Escuchar cambios en el documento de productos
+      const unsubscribeProducts = onSnapshot(productsRef, (snapshot) => {
+        const data = snapshot.data();
+        setProductsFile(data?.data);
+        // Puedes agregar aquí la lógica para diferenciar el archivo de productos
+      });
+  
+      // Escuchar cambios en el documento de ofertas
+      const unsubscribeOffers = onSnapshot(offersRef, (snapshot) => {
+        const data = snapshot.data();
+        setOffersFile(data?.data);
+        // Puedes agregar aquí la lógica para diferenciar el archivo de ofertas
+      });
+  
+      // Devolver una función de limpieza para detener la escucha cuando sea necesario
+      return () => {
+        unsubscribeProducts();
+        unsubscribeOffers();
+      };
     } catch (error) {
       console.error('Error al obtener datos:', error);
     }
   };
+  
+  // Llamar a la función para iniciar la escucha de cambios
+  listenToDataChanges();
+
   const handleClick = () => {
     if (clickHabilitado) {
       // Lógica del clic cuando está habilitado
       alert('¡Clic habilitado!');
     }
   };
+  
   useEffect(() => {
     const fetchData = async () => {
-      await getData();
+      listenToDataChanges();
       inputRef.current?.focus();
     };
+
     const deshabilitarClick = () => {
       setClickHabilitado(false);
     };
 
-    // Simula la deshabilitación del clic cuando se monta el componente
     deshabilitarClick();
 
     fetchData();
@@ -76,7 +102,7 @@ const App: React.FC = () => {
         {section === 0 && (<span className='h-screen  w-screen absolute z-30' onClick={inputFocus}></span>)}
 
 
-        <NavBar setNavBar={setNavBar}  navBar={navBar} setSection={setSection} />
+        <NavBar setNavBar={setNavBar} deshabilitarMouseDown={deshabilitarMouseDown} navBar={navBar} setSection={setSection} />
 
         <div className='border-b-2 grid  place-items-center text-4xl font-bold uppercase'>
           <img className='w-auto h-14' src={logo} alt="La mediterranea" />
@@ -98,9 +124,9 @@ const App: React.FC = () => {
               />
             </>
           ) : section === 1 ? (
-            <Update cod={cod} handleFileChange={handleFileChange} excelFile={excelFile} where='products' />
+            <Update setExcelFile={setExcelFile} cod={cod} handleFileChange={handleFileChange} excelFile={excelFile} where='products' />
           ) : (
-            <Update cod={cod} handleFileChange={handleFileChange} excelFile={excelFile} where='offers' />
+            <Update setExcelFile={setExcelFile} cod={cod} handleFileChange={handleFileChange} excelFile={excelFile} where='offers' />
           )
           }
         </div>

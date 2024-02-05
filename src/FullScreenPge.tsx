@@ -3,32 +3,26 @@ import App from './App';
 
 const FullscreenPage: React.FC = () => {
   const handleFullscreen = () => {
-    
+
+  };
+
+  const deshabilitarMouseDown = (event: MouseEvent) => {
+    const element = document.documentElement;
+
+    if (element.requestFullscreen) {
+      element.requestFullscreen();
+    }
+    event.preventDefault();
   };
 
   useEffect(() => {
-    const deshabilitarMouseDown = (event: MouseEvent) => {
-      const element = document.documentElement;
-
-      if (element.requestFullscreen) {
-        element.requestFullscreen();
-      }
-      event.preventDefault();
-    };
-
     document.addEventListener('mousedown', deshabilitarMouseDown);
-
-    return () => {
-      document.removeEventListener('mousedown', deshabilitarMouseDown);
-    };
-
     handleFullscreen();
-
   }, []);
 
   return (
     <div>
-      <App />
+      <App deshabilitarMouseDown={deshabilitarMouseDown}/>
     </div>
   );
 };

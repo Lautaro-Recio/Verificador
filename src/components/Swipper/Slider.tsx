@@ -36,7 +36,7 @@ const Slider: React.FC<Offers> = (OffersFile) => {
                   return (
 
                     <SwiperSlide className='z-10' key={oferta.cod}>
-                      <div className='items-center place-items-center flex z-10 h-48 border-orangeMedit bg-white border-2 rounded-lg'>
+                      <div className='items-center place-items-center flex z-10 mx-10 h-48 border-orangeMedit bg-white border-2 rounded-lg'>
                         <img src={oferta.img} alt="" className='h-40 w-48' />
                         <div className='grid text-left gap-2 p-4 text-xl text-orangeMedit '>
                           <p>{oferta.name} </p>
