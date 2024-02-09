@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, useRef, useEffect, Dispatch, SetStateAction } from 'react';
 import { Product, ProducttoMap } from './Types';
 import { db } from '../Firebase';
-import {  doc, onSnapshot } from 'firebase/firestore';
+import { doc, onSnapshot } from 'firebase/firestore';
 import logo from "./assets/imgs/logo.png"
 import NavBar from './components/NavBar/NavBar';
 import Checker from './components/checker/Checker';
@@ -12,7 +12,7 @@ interface Props {
 }
 
 
-const App: React.FC<Props> = ({deshabilitarMouseDown}) => {
+const App: React.FC<Props> = ({ deshabilitarMouseDown }) => {
   const [excelFile, setExcelFile] = useState<File | null>(null);
   const [ProductsFile, setProductsFile] = useState<Product[] | null>(null);
   const [OffersFile, setOffersFile] = useState<Product[] | null>(null);
@@ -28,21 +28,21 @@ const App: React.FC<Props> = ({deshabilitarMouseDown}) => {
     try {
       const productsRef = doc(db, 'la mediterranea', 'products');
       const offersRef = doc(db, 'la mediterranea', 'offers');
-  
+
       // Escuchar cambios en el documento de productos
       const unsubscribeProducts = onSnapshot(productsRef, (snapshot) => {
         const data = snapshot.data();
         setProductsFile(data?.data);
         // Puedes agregar aquí la lógica para diferenciar el archivo de productos
       });
-  
+
       // Escuchar cambios en el documento de ofertas
       const unsubscribeOffers = onSnapshot(offersRef, (snapshot) => {
         const data = snapshot.data();
         setOffersFile(data?.data);
         // Puedes agregar aquí la lógica para diferenciar el archivo de ofertas
       });
-  
+
       // Devolver una función de limpieza para detener la escucha cuando sea necesario
       return () => {
         unsubscribeProducts();
@@ -52,7 +52,7 @@ const App: React.FC<Props> = ({deshabilitarMouseDown}) => {
       console.error('Error al obtener datos:', error);
     }
   };
-  
+
   // Llamar a la función para iniciar la escucha de cambios
   listenToDataChanges();
 
@@ -62,7 +62,7 @@ const App: React.FC<Props> = ({deshabilitarMouseDown}) => {
       alert('¡Clic habilitado!');
     }
   };
-  
+
   useEffect(() => {
     const fetchData = async () => {
       listenToDataChanges();
@@ -86,6 +86,7 @@ const App: React.FC<Props> = ({deshabilitarMouseDown}) => {
   const inputFocus = () => {
     handleClick()
     inputRef.current?.focus();
+    console.log("VOLVI")
   };
 
 
@@ -98,7 +99,7 @@ const App: React.FC<Props> = ({deshabilitarMouseDown}) => {
   return (
     <>
       <div className='h-screen overflow-hidden sticky'>
-        
+
         {section === 0 && (<span className='h-screen  w-screen absolute z-30' onClick={inputFocus}></span>)}
 
 
@@ -111,6 +112,7 @@ const App: React.FC<Props> = ({deshabilitarMouseDown}) => {
           {section === 0 ? (
             <>
               <Checker
+                inputFocus={inputFocus}
                 setNavBar={setNavBar}
                 myInput={inputRef}
                 cod={cod}
@@ -124,9 +126,9 @@ const App: React.FC<Props> = ({deshabilitarMouseDown}) => {
               />
             </>
           ) : section === 1 ? (
-            <Update setExcelFile={setExcelFile} cod={cod} handleFileChange={handleFileChange} excelFile={excelFile} where='products' />
+            <Update inputFocus={inputFocus} setExcelFile={setExcelFile} cod={cod} handleFileChange={handleFileChange} excelFile={excelFile} where='products' />
           ) : (
-            <Update setExcelFile={setExcelFile} cod={cod} handleFileChange={handleFileChange} excelFile={excelFile} where='offers' />
+            <Update inputFocus={inputFocus} setExcelFile={setExcelFile} cod={cod} handleFileChange={handleFileChange} excelFile={excelFile} where='offers' />
           )
           }
         </div>
