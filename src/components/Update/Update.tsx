@@ -98,7 +98,7 @@ const Update: React.FC<Props> = ({ handleFileChange, cod, excelFile, where, setE
   };
 
   return (
-    <div className={`overflow-hidden ${cod !== '10' ? 'w-0' : 'w-32 p-4'} grid place-items-center  absolute z-50 w-screen h-screen  transition-all border-r-2`}>
+    <div className={`overflow-hidden ${cod !== '6935364070854' ? 'w-0' : 'w-32 p-4'} grid place-items-center  absolute z-50 w-screen h-screen  transition-all border-r-2`}>
       <div className="grid gap-6">
         <input
         

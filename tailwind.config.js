@@ -10,7 +10,7 @@ export default {
         'productsPng': "url(./assets/imgs/fondo.png)",
       },
       fontFamily: {
-        custom: ['Causten-BlackOblique', 'sans-serif'],
+        "custom": ['Josefin Sans', 'sans-serif'],
       },
       colors: {
         orangeMedit: '#e75113', // Reemplaza esto con el código de color que desees

@@ -86,7 +86,6 @@ const App: React.FC<Props> = ({ deshabilitarMouseDown }) => {
   const inputFocus = () => {
     handleClick()
     inputRef.current?.focus();
-    console.log("VOLVI")
   };
 
 
@@ -98,14 +97,14 @@ const App: React.FC<Props> = ({ deshabilitarMouseDown }) => {
 
   return (
     <>
-      <div className='h-screen overflow-hidden sticky'>
+      <div className='h-screen overflow-hidden sticky uppercase '>
 
         {section === 0 && (<span className='h-screen  w-screen absolute z-30' onClick={inputFocus}></span>)}
 
 
         <NavBar setNavBar={setNavBar} deshabilitarMouseDown={deshabilitarMouseDown} navBar={navBar} setSection={setSection} />
 
-        <div className='border-b-2 grid  place-items-center text-4xl font-bold uppercase'>
+        <div className='border-b-2 grid  place-items-center '>
           <img className='w-auto h-14' src={logo} alt="La mediterranea" />
         </div>
         <div className="h-screen flex bg-productsPng sticky">

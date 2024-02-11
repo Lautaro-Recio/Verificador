@@ -19,6 +19,7 @@ interface CheckerProps {
 }
 
 const Checker: React.FC<CheckerProps> = ({
+    inputFocus,
     myInput,
     cod,
     productMap,
@@ -32,11 +33,15 @@ const Checker: React.FC<CheckerProps> = ({
     
 }) => {
     const [dis, setDis] = useState(false)
-1001
+
     const filtrarProducto = (num: string) => {
-        num == "10" && setNavBar(true)
-        setDis(true)
+        num == "6935364070854" && setNavBar(true) 
         setCod(num);
+
+        setTimeout(() => {
+            setDis(true)
+        }, 1000);
+
         try {
             const prod = ProductsFile?.find((e) => e.cod === num);
             prod ? setProductMap(prod) : setNotFound(true);
@@ -50,10 +55,10 @@ const Checker: React.FC<CheckerProps> = ({
             setNotFound(false);
             setCod("");
             setDis(false);
+            inputFocus()
         }, 5000);
         
     };
-    console.log(dis)
     
 
     return (
@@ -75,7 +80,7 @@ const Checker: React.FC<CheckerProps> = ({
                         <FindedProduct productMap={productMap} />
                     ) : (
                         <b>
-                            <h1 className="text-3xl font-custom uppercase text-orangeMedit  bg-grayMedit mx-72 p-2 rounded-lg">
+                            <h1 className="md:text-3xl text-xl uppercase text-orangeMedit  bg-grayMedit md:mx-72 mx-36 p-2 rounded-lg">
                                 Consulte su precio aqui
                             </h1>
                         </b>
