@@ -8,7 +8,7 @@ interface props {
 const FindedProduct: React.FC<props> = ({productMap}) => {
 
     return (
-        <div className='bg-[#e1e1e1b0] md:mx-72 mx-36 rounded-lg'>
+        <div className='bg-[#e1e1e1b0] md:mx-72 mx-12 rounded-lg'>
 
             <b >
                 <p className='p-4 md:text-4xl text-2xl'>{productMap?.name} </p>
