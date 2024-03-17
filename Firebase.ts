@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getStorage, } from "firebase/storage";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
-import { Product } from "./src/Types";
+import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import { Product, ProducttoMap } from "./src/Types";
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_REACT_APP_APIKEY,
   authDomain: import.meta.env.VITE_REACT_APP_AUTH_DOMAIN,
@@ -17,17 +17,60 @@ export const storage = getStorage(app)
 
 
 
-export const uploadData = async (data: Product[], where: string) => {
-  const collectionRef = doc(db, 'la mediterranea', where);
+export const uploadData = async (data: Product[] | Product, where: string) => {
+  if (where !== "ofertas") {
 
-  try {
-    await setDoc(collectionRef, { data });
-    console.log('Datos subidos exitosamente');
-  } catch (error) {
-    console.error('Error al subir datos:', error);
+    const collectionRef = doc(db, 'la mediterranea', where);
+
+    try {
+      await setDoc(collectionRef, { data });
+      console.log('Datos subidos exitosamente');
+    } catch (error) {
+      console.error('Error al subir datos:', error);
+    }
+  } else {
+    const collectionRef = doc(db, 'Ofertas La mediterranea ', where);
+
+    try {
+      await setDoc(collectionRef, { data });
+      console.log('Datos subidos exitosamente');
+    } catch (error) {
+      console.error('Error al subir datos:', error);
+    }
   }
 };
 
+export const getProd = async (docId: string) => {
+  const docRef = doc(db, "la mediterranea", docId);
+  const docSnap = await getDoc(docRef);
+  try {
+
+    if (docSnap.exists()) {
+      console.log(docSnap.data())
+
+      return docSnap.data() as ProducttoMap
+    }
+  } catch {
+
+    console.error("No such document!");
+
+  }
+}
+
+export const getOffers = async () => {
+  const docRef = doc(db, "Ofertas La mediterranea ", "ofertas");
+  const docSnap = await getDoc(docRef);
+  try {
+
+    console.log(docSnap.data())
+    return docSnap.data() as ProducttoMap
+
+  } catch {
+
+    console.error("No such document!");
+
+  }
+}
 
 
 // Llamas a la función para obtener la colección

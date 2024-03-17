@@ -10,7 +10,7 @@ interface Props {
   setExcelFile: (e: File | null) => void;
   excelFile: File | null;
   where: string;
-  inputFocus:()=>void;
+  inputFocus: () => void;
 }
 
 const Update: React.FC<Props> = ({ handleFileChange, cod, excelFile, where, setExcelFile, inputFocus }) => {
@@ -33,10 +33,10 @@ const Update: React.FC<Props> = ({ handleFileChange, cod, excelFile, where, setE
           const jsonData: unknown[] = XLSX.utils.sheet_to_json(worksheet);
 
           const jsonChunks = chunkArray(jsonData, CHUNK_SIZE);
-
-          const promises: Promise<void>[] = [];
+          const offers : Product[] = []
+          
           jsonChunks.forEach((chunk) => {
-            const products: Product[] = chunk.map((item: unknown) => {
+            chunk.forEach((item: unknown) => {
               const safeItem = item as {
                 img?: string;
                 name?: string;
@@ -57,29 +57,20 @@ const Update: React.FC<Props> = ({ handleFileChange, cod, excelFile, where, setE
                   price: safeItem.price || 0,
                   validity: safeItem.validity || '',
                 };
-                return producto;
+                producto.validity ? offers.push(producto) : uploadData(producto, producto.cod)
+                uploadData(offers, "ofertas")
+                //const uploadPromise = uploadData(producto, where);
+                //promises.push(uploadPromise);
               }
-              return null;
-            }).filter((producto: Product | null): producto is Product => producto !== null);
-
-            const uploadPromise = uploadData(products, where);
-            promises.push(uploadPromise);
+            });
           });
 
-          Promise.all(promises)
-            .then(() => {
-              setLoading(false); // Ocultar el loader cuando se complete la subida
-            })
-            .catch((error) => {
-              console.error('Error al subir datos:', error);
-              setLoading(false); // Ocultar el loader en caso de error
-            });
         }
       };
 
       lector.readAsBinaryString(excelFile);
       setExcelFile(null);
-      inputFocus()
+      inputFocus();
     } else {
       alert('Selecciona un archivo Excel primero.');
     }
@@ -101,7 +92,6 @@ const Update: React.FC<Props> = ({ handleFileChange, cod, excelFile, where, setE
     <div className={`overflow-hidden ${cod !== '6935364070854' ? 'w-0' : 'w-32 p-4'} grid place-items-center  absolute z-50 w-screen h-screen  transition-all border-r-2`}>
       <div className="grid gap-6">
         <input
-        
           type="file"
           onChange={handleFileChange}
           className="w-64 file:border-solid file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-2 file:font-bold file:border-orangeMedit file:text-sm  file:bg-white file:text-orangeMedit hover:file:bg-orangeMedit hover:file:text-white transition-all"

@@ -1,17 +1,17 @@
+import { useState } from "react";
+import {getProd } from "../../../Firebase";
 import { Product, ProducttoMap } from "../../Types";
 import FindedProduct from "../Products/FindedProduct";
 import UnfindedProduct from "../Products/UnfindedProduct";
 import Slider from "../Swipper/Slider";
 
 interface CheckerProps {
+    offers?: ProducttoMap | undefined;    
     myInput: React.RefObject<HTMLInputElement>;
     cod: string;
-    productMap?: ProducttoMap | null;
     notFound?: boolean;
     setCod: React.Dispatch<React.SetStateAction<string>>;
-    setProductMap: React.Dispatch<React.SetStateAction<ProducttoMap | undefined> | null>;
     setNotFound: React.Dispatch<React.SetStateAction<boolean>>;
-    ProductsFile?: Product[] | null;
     OffersFile?: Product[] | null;
     setNavBar: React.Dispatch<React.SetStateAction<boolean>>;
     inputFocus: () => void;
@@ -20,53 +20,55 @@ interface CheckerProps {
 const Checker: React.FC<CheckerProps> = ({
     myInput,
     cod,
-    productMap,
     notFound,
-    ProductsFile,
-    OffersFile,
+    offers,
     setCod,
     setNotFound,
-    setProductMap,
     setNavBar,
 }) => {
+    const [productTomap, setProductTomap] = useState<ProducttoMap | null>();
 
-    const handleChange = (num: string) => {
-        console.log(num);
-        setCod(num);
-        setTimeout(() => {
-            myInput.current?.blur();
-            // Hacer que el input recupere el focus
-        }, 100);
-        setTimeout(() => {
-            setProductMap(null);
-            setNotFound(false);
-            setCod("");
-            myInput.current?.focus(); // Hacer que el input recupere el focus
-        }, 3000);
+    const handleChange = async (num: string) => {
+        try {
+            const product: ProducttoMap | undefined = await getProd(num); // Suponiendo que getProd devuelve una Promesa<Product | undefined>
+            if (product !== undefined) {
+                setCod(product.data.cod);
+                setProductTomap(product) // Suponiendo que product tiene una propiedad 'cod'
+            }else{
+                setCod(num); 
+                setNotFound(true);
+            }
+            setTimeout(() => {
+                myInput.current?.blur();
+                // Hacer que el input recupere el focus
+            }, 100);
+            setTimeout(() => {
+                setProductTomap(null);
+                setNotFound(false);
+                setCod("");
+                myInput.current?.focus(); // Hacer que el input recupere el focus
+            }, 3000);
+        } catch (error) {
+            console.error("Error al obtener el producto:", error);
+            // Manejar el error si es necesario
+        }
     };
 
     const filtrarProducto = (num: string) => {
-        num === "6935364070854" && setNavBar(true);
+        num === "10" && setNavBar(true);
 
         // Hacer que el input pierda el focus
-        if(num === ""){
-
+        if (num === "") {
             setTimeout(() => {
-                setProductMap(null);
+                setProductTomap(null);
                 setNotFound(false);
                 setCod("");
                 myInput.current?.focus(); // Hacer que el input recupere el focus
             }, 3000);
         }
-        try {
-            const prod = ProductsFile?.find((e) => e.cod === num);
-            prod ? setProductMap(prod) : setNotFound(true);
-        } catch (error) {
-            console.error('Error al analizar JSON:', error);
-        }
-
-        // Restablecer los estados después de un tiempo
        
+        // Restablecer los estados después de un tiempo
+
     };
 
     return (
@@ -75,14 +77,14 @@ const Checker: React.FC<CheckerProps> = ({
                 <input
                     type="number"
                     ref={myInput}
-                    className="opacity-0 w-0 h-0 pointer-events-none"
+                    className="opacity-0 w-0 h-0 pointer-events-none" 
                     value={cod}
                     onChange={(e) => handleChange(e.target.value)}
                     onBlur={(e) => filtrarProducto(e.target.value)}
                 />
                 <div>
-                    {productMap ? (
-                        <FindedProduct productMap={productMap} />
+                    {productTomap ? (
+                        <FindedProduct productTomap={productTomap} />
                     ) : (
                         <b>
                             <h1 className="md:text-3xl text-xl uppercase text-orangeMedit  bg-grayMedit md:mx-72 mx-36 p-2 rounded-lg">
@@ -93,7 +95,7 @@ const Checker: React.FC<CheckerProps> = ({
                     {notFound && <UnfindedProduct cod={cod} />}
                 </div>
             </div>
-            <Slider OffersFile={OffersFile} />
+            <Slider offers={offers} />
         </div>
     );
 };

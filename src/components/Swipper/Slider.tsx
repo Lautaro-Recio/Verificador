@@ -6,15 +6,15 @@ import "swiper/css/autoplay";
 // Import Swiper styles
 import 'swiper/css';
 
-import { Product } from '../../Types';
+import { ProducttoMap } from '../../Types';
 
 interface Offers {
-  OffersFile?: Product[] | null;
+  offers?: ProducttoMap | undefined;
 }
 
-
-const Slider: React.FC<Offers> = (OffersFile) => {
-
+const Slider: React.FC<Offers> = (offers) => {
+const ofertas = offers.offers?.data
+console.log(ofertas)
 
     return (
         <div className='font-bold bg-transparent'>
@@ -31,21 +31,21 @@ const Slider: React.FC<Offers> = (OffersFile) => {
                 }}
                 pagination={{ clickable: true }}
               >
-                {OffersFile.OffersFile?.map((oferta) => {
+                {ofertas?.map((oferta) => {
 
                   return (
 
-                    <SwiperSlide className='z-10' key={oferta.cod}>
+                    <SwiperSlide className='z-10' key={oferta?.img}>
                       <div className='items-center place-items-center w flex z-10 md:mx-10 mx-2 h-48 border-orangeMedit bg-white border-2 rounded-lg'>
-                        <img src={oferta.img} alt="" className='md:h-40 md:w-48 h-28 w-32' />
+                        <img src={oferta?.img} alt="" className='md:h-40 md:w-48 h-28 w-32' />
                         <div className='grid text-left md:gap-2 md:p-4 md:text-xl text-base text-orangeMedit '>
-                          <p>{oferta.name} </p>
-                          <p>{oferta.brand} {oferta.presentation}</p>
-                          <p className='md:text-2xl text-xl'>${oferta.price}</p>
-                          <p>Disponible hasta 30/12/2023</p>
+                          <p>{oferta?.name} </p>
+                          <p>{oferta?.brand} {oferta?.presentation}</p>
+                          <p className='md:text-2xl text-xl'>$ {oferta?.price.toFixed(2)}</p>
+                          <p>Disponible {oferta?.validity}</p>
                         </div>
                       </div>
-                    </SwiperSlide>
+                    </SwiperSlide> 
                   )
                 })
                 }

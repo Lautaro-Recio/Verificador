@@ -19,11 +19,8 @@ export interface dateType {
   
 
 export type ProducttoMap = {
-    cod:string;
-    name: string;
-    brand:string;
-    price: number;
-    presentation:string;
+    data:Product
+
 
     // Agrega más propiedades según sea necesario
 }

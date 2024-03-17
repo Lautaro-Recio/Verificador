@@ -5,6 +5,7 @@ interface props {
 }
 
 const UnfindedProduct: React.FC<props> = ({ cod }) => {
+    console.log(cod) 
 
     return (
         <>
