@@ -8,9 +8,9 @@ import 'swiper/css';
 
 import { ProducttoMap } from '../../Types';
 
-interface Offers {
+interface Offers { 
   offers?: ProducttoMap | undefined;
-}
+}  
 
 const Slider: React.FC<Offers> = (offers) => {
 const ofertas = offers.offers?.data
@@ -18,7 +18,7 @@ console.log(ofertas)
 
     return (
         <div className='font-bold bg-transparent'>
-              <h4 className='py-2 text-orangeMedit bg-grayMedit rounded-md my-2 text-xl md:text-3xl w-1/2 mx-[25%] z-10  '>Ofertas Destacadas</h4>
+              <h4 className='py-2 text-orangeMedit bg-grayMedit rounded-md my-2 text-xl md:text-3xl w-1/2 mx-[25%] z-10  '>¡Ofertas Destacadas!</h4>
               <Swiper
                 // install Swiper modules
                 className='px-12 bg-transparent z-10 '
