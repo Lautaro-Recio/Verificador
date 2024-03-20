@@ -13,7 +13,7 @@ interface Props {
 
 const App: React.FC<Props> = ({ deshabilitarMouseDown }) => {
   const [excelFile, setExcelFile] = useState<File | null>(null);
-  const [offers, setOffersFile] = useState<ProducttoMap | undefined>(undefined);
+  const [offers, setOffersFile] = useState<ProducttoMap[] | undefined>(undefined); // Corregido aquí
 
 
   const [cod, setCod] = useState<string>("");
@@ -32,12 +32,16 @@ const App: React.FC<Props> = ({ deshabilitarMouseDown }) => {
       alert('¡Clic habilitado!');
     }
   };
-
+  
   useEffect(() => {
     const fetchData = async () => {
       inputRef.current?.focus();
-      setOffersFile(await getOffers())
-      
+      const offersData: ProducttoMap | undefined = await getOffers();
+      if (offersData !== undefined) {
+        setOffersFile([offersData]); // Aquí se debe pasar un array con el objeto
+      } else {
+        setOffersFile(undefined); // En caso de que no haya datos, se pasa undefined
+      }
     };
 
     const deshabilitarClick = () => {

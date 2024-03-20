@@ -1,12 +1,12 @@
 import { useState } from "react";
-import {getProd } from "../../../Firebase";
+import { getProd } from "../../../Firebase";
 import { Product, ProducttoMap } from "../../Types";
 import FindedProduct from "../Products/FindedProduct";
 import UnfindedProduct from "../Products/UnfindedProduct";
 import Slider from "../Swipper/Slider";
 
 interface CheckerProps {
-    offers?: ProducttoMap | undefined;    
+    offers?: ProducttoMap[] | undefined; // Ahora se espera un array de ProducttoMap
     myInput: React.RefObject<HTMLInputElement>;
     cod: string;
     notFound?: boolean;
@@ -33,9 +33,9 @@ const Checker: React.FC<CheckerProps> = ({
             const product: ProducttoMap | undefined = await getProd(num); // Suponiendo que getProd devuelve una Promesa<Product | undefined>
             if (product !== undefined) {
                 setCod(product.data.cod);
-                setProductTomap(product) // Suponiendo que product tiene una propiedad 'cod'
-            }else{
-                setCod(num); 
+                setProductTomap(product); // Suponiendo que product tiene una propiedad 'cod'
+            } else {
+                setCod(num);
                 setNotFound(true);
             }
             setTimeout(() => {
@@ -66,9 +66,8 @@ const Checker: React.FC<CheckerProps> = ({
                 myInput.current?.focus(); // Hacer que el input recupere el focus
             }, 3000);
         }
-       
-        // Restablecer los estados después de un tiempo
 
+        // Restablecer los estados después de un tiempo
     };
 
     return (
@@ -77,7 +76,7 @@ const Checker: React.FC<CheckerProps> = ({
                 <input
                     type="number"
                     ref={myInput}
-                    className="opacity-0 w-0 h-0 pointer-events-none" 
+                    className="opacity-0 w-0 h-0 pointer-events-none"
                     value={cod}
                     onChange={(e) => handleChange(e.target.value)}
                     onBlur={(e) => filtrarProducto(e.target.value)}
