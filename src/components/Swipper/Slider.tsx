@@ -13,12 +13,16 @@ interface Offers {
   offers?: ProducttoMap[] | undefined;
 }  
 
-const Slider: React.FC<Offers> = ({ offers }) => {
+const Slider: React.FC<Offers> = ({ offers }) => { 
   // Comprobar si offers existe y tiene data
-  const ofertas: Product[] | undefined = offers?.map((item: ProducttoMap) => {
+
+  console.log(offers)
+  const ofertas: Product[] | undefined = offers?.map((item) => {
+    console.log(item.data)
+    
     return {
-      cod: item.data.cod, // Ajusta esto según la propiedad real de cod en ProducttoMap
       img: item.data.img, // Ajusta esto según la propiedad real de imagen en ProducttoMap
+      cod: item.data.cod, // Ajusta esto según la propiedad real de cod en ProducttoMap
       name: item.data.name,
       brand: item.data.brand,
       presentation: item.data.presentation,
@@ -51,7 +55,7 @@ const Slider: React.FC<Offers> = ({ offers }) => {
               <div className='grid text-left md:gap-2 md:p-4 md:text-xl text-base text-orangeMedit '>
                 <p>{oferta.name}</p>
                 <p>{oferta.brand} {oferta.presentation}</p>
-                <p className='md:text-2xl text-xl'>$ {oferta.price.toFixed(2)}</p>
+                <p className='md:text-2xl text-xl'>$ {oferta.price}</p>
                 <p>Disponible {oferta.validity}</p>
               </div>
             </div>

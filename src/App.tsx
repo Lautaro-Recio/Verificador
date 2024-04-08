@@ -32,14 +32,16 @@ const App: React.FC<Props> = ({ deshabilitarMouseDown }) => {
       alert('¡Clic habilitado!');
     }
   };
-  
+
   useEffect(() => {
     const fetchData = async () => {
       inputRef.current?.focus();
       const offersData: ProducttoMap | undefined = await getOffers();
       if (offersData !== undefined) {
+        console.log(offersData);
         setOffersFile([offersData]); // Aquí se debe pasar un array con el objeto
       } else {
+
         setOffersFile(undefined); // En caso de que no haya datos, se pasa undefined
       }
     };

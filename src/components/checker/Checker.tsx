@@ -3,7 +3,6 @@ import { getProd } from "../../../Firebase";
 import { Product, ProducttoMap } from "../../Types";
 import FindedProduct from "../Products/FindedProduct";
 import UnfindedProduct from "../Products/UnfindedProduct";
-import Slider from "../Swipper/Slider";
 
 interface CheckerProps {
     offers?: ProducttoMap[] | undefined; // Ahora se espera un array de ProducttoMap
@@ -27,6 +26,7 @@ const Checker: React.FC<CheckerProps> = ({
     setNavBar,
 }) => {
     const [productTomap, setProductTomap] = useState<ProducttoMap | null>();
+    console.log(offers);
 
     const handleChange = async (num: string) => {
         try {
@@ -72,7 +72,7 @@ const Checker: React.FC<CheckerProps> = ({
 
     return (
         <div className="h-1/2 place-items-center w-full text-3xl text-center uppercase">
-            <div className="h-[90%]">
+            <div className="h-full">
                 <input
                     type="number"
                     ref={myInput}
@@ -81,12 +81,12 @@ const Checker: React.FC<CheckerProps> = ({
                     onChange={(e) => handleChange(e.target.value)}
                     onBlur={(e) => filtrarProducto(e.target.value)}
                 />
-                <div>
+                <div className="md:py-12">
                     {productTomap ? (
                         <FindedProduct productTomap={productTomap} />
                     ) : (
                         <b>
-                            <h1 className="md:text-3xl text-xl uppercase text-orangeMedit  bg-grayMedit md:mx-72 mx-36 p-2 rounded-lg">
+                            <h1 className="md:text-4xl text-xl uppercase text-orangeMedit  bg-grayMedit md:mx-72 md:py-12 mx-36 p-2 rounded-lg">
                                 Consulte su precio aquí
                             </h1>
                         </b>
@@ -94,7 +94,6 @@ const Checker: React.FC<CheckerProps> = ({
                     {notFound && <UnfindedProduct cod={cod} />}
                 </div>
             </div>
-            <Slider offers={offers} />
         </div>
     );
 };

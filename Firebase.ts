@@ -32,7 +32,7 @@ export const uploadData = async (data: Product[] | Product, where: string) => {
     const collectionRef = doc(db, 'Ofertas La mediterranea ', where);
 
     try {
-      await setDoc(collectionRef, { data });
+      await setDoc(collectionRef, {data} ); 
       console.log('Datos subidos exitosamente');
     } catch (error) {
       console.error('Error al subir datos:', error);
@@ -61,17 +61,16 @@ export const getOffers = async () => {
   const docRef = doc(db, "Ofertas La mediterranea ", "ofertas");
   const docSnap = await getDoc(docRef);
   try {
-
-    console.log(docSnap.data())
-    return docSnap.data() as ProducttoMap
-
-  } catch {
-
-    console.error("No such document!");
-
+    const data = docSnap.data();
+    console.log(data?.data)
+    if (data && data.data) {
+      console.log(data.data);
+      return data.data as ProducttoMap;
+    }
+  } catch (error) {
+    console.error("Error fetching document:", error);
   }
 }
-
 
 // Llamas a la función para obtener la colección
 
